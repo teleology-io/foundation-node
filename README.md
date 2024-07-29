@@ -19,7 +19,7 @@ yarn add @teleology/foundation
 
 ## Usage Example:
 ```javascript
-const { Foundation } = require('@teleology/foundation-sdk');
+const { Foundation } = require('@teleology/foundation');
 
 (async () => {
     const sdk = new Foundation({
