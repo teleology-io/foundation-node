@@ -11,7 +11,7 @@ interface VariableCache {
   [index: string]: ResolvedVariable
 }
 
-export function Foundation({ url, apiKey, uid }: {
+export function Foundation({ url, apiKey, uid: globalUid }: {
   url: string
   apiKey: string
   uid?: string
@@ -59,7 +59,7 @@ export function Foundation({ url, apiKey, uid }: {
     return config
   }
 
-  async function getVariable(name: string, fallback?: any) {
+  async function getVariable(name: string, uid?: string, fallback?: any) {
     const found = variables[name]
     if (found) {
       return found.value
@@ -70,7 +70,7 @@ export function Foundation({ url, apiKey, uid }: {
       method: 'post',
       data: {
         name,
-        uid,
+        uid: uid || globalUid
       }
     })
     if (result) {

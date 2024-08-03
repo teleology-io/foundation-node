@@ -25,7 +25,7 @@ const { Foundation } = require('@teleology/foundation');
     const sdk = new Foundation({
         url: 'https://foundation-api.teleology.io',
         apiKey: '<your-api-key>',
-        uid: '<user-unique-id>'
+        uid: '<global-user-unique-id>'
     })
 
     sdk.subscribe(console.log)
@@ -33,6 +33,6 @@ const { Foundation } = require('@teleology/foundation');
 
     console.log('Env is', await sdk.getEnvironment())
     console.log("config", await sdk.getConfiguration())
-    console.log("variable is", await sdk.getVariable('numb', 20))
+    console.log("variable is", await sdk.getVariable('variable_name', 'optional-uid-override', '<fallback_value>'))
 })();
 ```
