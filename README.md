@@ -4,7 +4,7 @@ The Foundation Node & browser Library is your gateway to effortless interaction 
 ## Installation
 
 ```
-npm -i @teleology/foundation
+npm i @teleology/foundation
 ```
 
 or 
