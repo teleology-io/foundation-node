@@ -29,13 +29,17 @@ export function Foundation({ url, apiKey, uid: globalUid }: {
     },
   })
 
-  client.interceptors.response.use((res) => res.data, (err) => undefined)
-
   async function getEnvironment() {
     if (!environment) {
       environment = await client({
         url: '/v1/environment',
         method: 'get'
+      }).then((res) => res.data).catch(error => {
+        if (error.response) {
+          throw new Error(JSON.stringify(error.response.data))
+        } else {
+          throw error
+        }
       })
     }
 
@@ -47,19 +51,25 @@ export function Foundation({ url, apiKey, uid: globalUid }: {
       const result: any = await client({
         url: '/v1/configuration',
         method: 'get'
+      }).then((res) => res.data).catch(error => {
+        if (error.response) {
+          throw new Error(JSON.stringify(error.response.data))
+        } else {
+          throw error
+        }
       })
 
-      if (result.mime_type === 'application/json') {
+      if (result?.mime_type === 'application/json') {
         config = JSON.parse(result.content)
       } else {
-        config = result.content
+        config = result?.content
       }
     }
 
     return config
   }
 
-  async function getVariable(name: string, uid?: string, fallback?: any) {
+  async function getVariable({ name, uid, fallback }: { name: string, uid?: string, fallback?: any }) {
     const found = variables[name]
     if (found) {
       return found.value
@@ -72,7 +82,17 @@ export function Foundation({ url, apiKey, uid: globalUid }: {
         name,
         uid: uid || globalUid
       }
+    }).then((res) => res.data).catch(error => {
+      // not found for variable only, this is because we can use a fallback
+      if (error?.response?.status === 404) return undefined;
+
+      if (error.response) {
+        throw new Error(JSON.stringify(error.response.data))
+      } else {
+        throw error
+      }
     })
+
     if (result) {
       variables[name] = result;
       return result.value

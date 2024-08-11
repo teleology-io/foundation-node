@@ -22,7 +22,7 @@ yarn add @teleology/foundation
 const { Foundation } = require('@teleology/foundation');
 
 (async () => {
-    const sdk = new Foundation({
+    const sdk = Foundation({
         url: 'https://foundation-api.teleology.io',
         apiKey: '<your-api-key>',
         uid: '<global-user-unique-id>'
@@ -33,6 +33,10 @@ const { Foundation } = require('@teleology/foundation');
 
     console.log('Env is', await sdk.getEnvironment())
     console.log("config", await sdk.getConfiguration())
-    console.log("variable is", await sdk.getVariable('variable_name', 'optional-uid-override', '<fallback_value>'))
+    console.log("variable is", await sdk.getVariable({
+        name: 'variable_name',
+        uid: 'optional-uid-override',
+        fallback: 'fallback-value',
+    }))
 })();
 ```
